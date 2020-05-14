@@ -1,7 +1,7 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/login.ftlh" as login>
 <@c.page>
-    REGISTER
+    <h1>REGISTER</h1>
     ${message!}
     <@login.login "/registration"/>
 </@c.page>
