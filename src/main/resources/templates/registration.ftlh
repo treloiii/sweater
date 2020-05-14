@@ -3,5 +3,5 @@
 <@c.page>
     <h1>REGISTER</h1>
     ${message!}
-    <@login.login "/registration"/>
+    <@login.login "/registration" true/>
 </@c.page>
