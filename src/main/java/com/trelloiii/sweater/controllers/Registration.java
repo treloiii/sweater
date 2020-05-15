@@ -7,11 +7,9 @@ import com.trelloiii.sweater.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -30,11 +28,19 @@ public class Registration {
     }
 
     @PostMapping("/registration")
-    public String addUser(@Valid User user, BindingResult bindingResult, Model model){
-        if(user.getPassword()!=null&&!user.getPassword().equals(user.getPassword2())){
+    public String addUser(
+            @RequestParam String password2,
+            @Valid User user,
+            BindingResult bindingResult,
+            Model model){
+        boolean isP2Valid=StringUtils.isEmpty(password2);
+        if(isP2Valid){
+            model.addAttribute("password2Error","password confirmation can't be empty");
+        }
+        if(user.getPassword()!=null&&!user.getPassword().equals(password2)){
             model.addAttribute("passwordError","Passwords are different");
         }
-        if(bindingResult.hasErrors()){
+        if(isP2Valid||bindingResult.hasErrors()){
             getErrors(bindingResult,model);
             return "registration";
         }else {
@@ -48,10 +54,14 @@ public class Registration {
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code){
         boolean isActive=userService.activateUser(code);
-        if(isActive)
-            model.addAttribute("message","User activated");
-        else
-            model.addAttribute("message","invalid code");
+        if(isActive) {
+            model.addAttribute("type","success");
+            model.addAttribute("message", "User activated");
+        }
+        else {
+            model.addAttribute("type","danger");
+            model.addAttribute("message", "Invalid code");
+        }
         return "login";
     }
 }
