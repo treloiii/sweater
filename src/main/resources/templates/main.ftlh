@@ -7,7 +7,7 @@
                 <@out.logout/>
             </div>
             <div class="col">
-                <span><a class="btn btn-primary" href="/user">User list</a></span>
+                <span><a class="btn btn-primary" href="${ref}"><#if ref=="/user">User list<#else>Profile</#if></a></span>
             </div>
         </div>
     </div>
@@ -17,8 +17,18 @@
             </div>
             <div class="col">
                 <form method="post" action="/main" enctype="multipart/form-data">
-                    <input class="form-control" type="text" name="text" placeholder="enter message">
-                    <input class="form-control" type="text" name="tag" placeholder="tag">
+                    <input class="form-control ${(textError??)?string('is-invalid','')}" value="<#if message??>${message.text}</#if>" type="text" name="text" placeholder="enter message">
+                    <#if textError??>
+                        <div class="invalid-feedback">
+                            ${textError}
+                        </div>
+                    </#if>
+                    <input class="form-control ${(tagError??)?string('is-invalid','')}" value="<#if message??>${message.tag}</#if>" type="text" name="tag" placeholder="tag">
+                    <#if tagError??>
+                        <div class="invalid-feedback">
+                            ${tagError}
+                        </div>
+                    </#if>
                     <div class="custom-file">
                         <input class="custom-file-input" type="file" id="custom-file" name="file">
                         <label class="custom-file-label" for="customFile">Choose file</label>

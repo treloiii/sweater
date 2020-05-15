@@ -2,6 +2,5 @@
 <#import "parts/login.ftlh" as login>
 <@c.page>
     <h1>REGISTER</h1>
-    ${message!}
-    <@login.login "/registration" true/>
+    <@login.login "/registration" true "${passwordError!}"  "${password2Error!}" "${usernameError!}" "${emailError!}"/>
 </@c.page>

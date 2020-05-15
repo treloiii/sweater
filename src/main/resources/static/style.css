@@ -9,3 +9,6 @@ img{
     background: lightgrey;
     padding: 1rem;
 }
+.invalid-feedback{
+    display: block!important;
+}

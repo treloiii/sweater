@@ -1,13 +1,20 @@
 package com.trelloiii.sweater.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @NotBlank(message = "Please fill the message")
+    @Length(max = 2048,message = "Message too long")
     private String text;
+    @NotBlank(message = "Please fill the tag")
+    @Length(max = 255,message = "Tag too long")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -46,11 +53,11 @@ public class Message {
         this.author = author;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
